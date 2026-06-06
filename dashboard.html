@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>SIEM Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;}
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background-color: #34495e; color: white; }
+        .severity-high, .severity-critical { color: #e74c3c; font-weight: bold; }
+        .severity-medium { color: #f39c12; font-weight: bold; }
+        .severity-low { color: #27ae60; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Panel Analityka SOC (SIEM)</h1>
+
+        <div style="width: 100%; max-width: 600px; margin: auto;">
+            <canvas id="severityChart"></canvas>
+        </div>
+
+        <h2>Ostatnie incydenty sieciowe</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Czas</th>
+                    <th>Adres IP (Źródło)</th>
+                    <th>Typ Ataku</th>
+                    <th>Priorytet</th>
+                    <th>Szczegóły</th>
+                </tr>
+            </thead>
+            <tbody id="logsTableBody">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Ta funkcja łączy się z naszym API na porcie 8000 i prosi o listę logów
+        async function fetchLogs() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/logs/');
+                const logs = await response.json();
+                
+                updateTable(logs);
+                updateChart(logs);
+            } catch (error) {
+                console.error("Błąd pobierania logów. Czy na pewno serwer FastAPI działa?", error);
+            }
+        }
+
+        // Uzupełniamy tabelę danymi
+        function updateTable(logs) {
+            const tableBody = document.getElementById('logsTableBody');
+            tableBody.innerHTML = ''; 
+
+            logs.forEach(log => {
+                const row = `<tr>
+                    <td>${log.id}</td>
+                    <td>${new Date(log.timestamp).toLocaleString()}</td>
+                    <td>${log.source_ip}</td>
+                    <td>${log.event_type}</td>
+                    <td class="severity-${log.severity}">${log.severity.toUpperCase()}</td>
+                    <td>${log.message}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Rysujemy wykres używając Chart.js
+        function updateChart(logs) {
+            const counts = { low: 0, medium: 0, high: 0, critical: 0 };
+            logs.forEach(log => {
+                if (counts[log.severity] !== undefined) counts[log.severity]++;
+            });
+
+            const ctx = document.getElementById('severityChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Niski (Low)', 'Średni (Medium)', 'Wysoki (High)', 'Krytyczny (Critical)'],
+                    datasets: [{
+                        label: 'Liczba incydentów wg priorytetu',
+                        data: [counts.low, counts.medium, counts.high, counts.critical],
+                        backgroundColor: ['#27ae60', '#f39c12', '#e67e22', '#c0392b']
+                    }]
+                }
+            });
+        }
+
+        // Odpal skrypt zaraz po załadowaniu strony
+        fetchLogs();
+    </script>
+</body>
+</html>
