@@ -19,7 +19,7 @@ A lightweight Security Information and Event Management (SIEM) system built with
 
 ### 1. Clone the repository
 ```bash
-git clone [https://github.com/YourUsername/Mini-SIEM-Dashboard.git](https://github.com/YourUsername/Mini-SIEM-Dashboard.git)
+git clone https://github.com/ytkodoshik/Mini-SIEM-Dashboard.git
 cd Mini-SIEM-Dashboard
 ```
 
