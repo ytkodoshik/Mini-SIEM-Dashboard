@@ -1,4 +1,4 @@
-#Mini SIEM & SOC Dashboard
+## Mini SIEM & SOC Dashboard
 
 ##  Overview
 A lightweight Security Information and Event Management (SIEM) system built with Python and FastAPI. This project simulates a Security Operations Center (SOC) environment by generating mock network traffic, storing logs in a local SQLite database, analyzing them in real-time for Brute-Force attacks, and visualizing the data on an interactive dashboard.
