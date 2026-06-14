@@ -64,6 +64,7 @@ Simply open the `dashboard.html` file in your web browser to see the live data p
 
 ### 2. Brute-Force Attack Detection
 <img width="714" height="232" alt="Zrzut ekranu 2026-06-14 102051" src="https://github.com/user-attachments/assets/f3444a1f-fe2b-4311-bb95-facdaa684d46" />
+
 *The Correlation Engine running in the background, automatically identifying and flagging a Brute-Force attack after multiple failed login attempts.*
 
 
