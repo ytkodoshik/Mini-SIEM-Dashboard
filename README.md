@@ -58,4 +58,12 @@ Simply open the `dashboard.html` file in your web browser to see the live data p
 
 ## 📸 Screenshots
 
+### 1. Real-time SOC Dashboard
 <img width="1191" height="1283" alt="Zrzut ekranu 2026-06-14 101530" src="https://github.com/user-attachments/assets/f349a6e8-dd76-4e9e-8ca2-3606b0ad03b4" />
+*Interactive web interface displaying live network incidents, severity distribution, and historical logs fetched from the API.*
+
+### 2. Brute-Force Attack Detection
+<img width="714" height="232" alt="Zrzut ekranu 2026-06-14 102051" src="https://github.com/user-attachments/assets/f3444a1f-fe2b-4311-bb95-facdaa684d46" />
+*The Correlation Engine running in the background, automatically identifying and flagging a Brute-Force attack after multiple failed login attempts.*
+
+
